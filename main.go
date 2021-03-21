@@ -6,7 +6,7 @@ import (
 	"log"	
 )
 
-var (
+const (
 	projectID = "moneyrecord-7ef16"
 	credentialsFile = "./moneySaver/moneyrecord-7ef16-firebase-adminsdk-ymi9q-56a433392f.json"
 )
@@ -27,9 +27,4 @@ func main() {
 		log.Fatalf("Failed to connect: %v\n", err)
 	}
 	defer m.Close()
-
-	err = m.Test()
-	if err != nil{
-		log.Fatalf("Failed to add new record: %v\n", err)
-	}
 }
