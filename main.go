@@ -27,4 +27,14 @@ func main() {
 		log.Fatalf("Failed to connect: %v\n", err)
 	}
 	defer m.Close()
+
+	err = m.NewIncome("Test Account", 2000,"พ่อให้มา", "ค่าขนม")
+	if err != nil{
+		log.Fatalf("Failed to add new income: %v\n", err)
+	}
+
+	err = m.NewIncome("Test Account", 3000,"เงินเดือน", "เงินเดือน")
+	if err != nil{
+		log.Fatalf("Failed to add new income: %v\n", err)
+	}
 }
