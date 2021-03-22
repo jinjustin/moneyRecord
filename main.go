@@ -28,13 +28,19 @@ func main() {
 	}
 	defer m.Close()
 
-	err = m.NewIncome("Test Account", 2000,"พ่อให้มา", "ค่าขนม")
+	err = m.NewExpense("Test Account",1000,"ค่าหอ","ค่าอยู่")
 	if err != nil{
-		log.Fatalf("Failed to add new income: %v\n", err)
+		log.Fatalf("Failed to create new expense: %v\n", err)
 	}
 
-	err = m.NewIncome("Test Account", 3000,"เงินเดือน", "เงินเดือน")
+	err = m.NewExpense("Test Account",60,"ข้าวกะเพราะหมูสามชั้น","ค่ากิน")
 	if err != nil{
-		log.Fatalf("Failed to add new income: %v\n", err)
+		log.Fatalf("Failed to create new expense: %v\n", err)
+	}
+
+	err = m.NewExpense("Test Account",20,"ข้าวเกรียบ","ค่ากิน")
+	if err != nil{
+		log.Fatalf("Failed to create new expense: %v\n", err)
+
 	}
 }
