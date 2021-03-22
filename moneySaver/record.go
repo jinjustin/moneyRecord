@@ -22,6 +22,16 @@ type Record struct{
 	Order int `json:"order"`
 }
 
+type Summarize struct{
+	Records []Record `json:"records"`
+	IncomeSummarize map[string]int `json:"incomeSummarize"`
+	IncomeType []string `json:"incomeType"`
+	ExpenseSummarize map[string]int `json:"expenseSummarize"`
+	ExpenseType []string `json:"expenseType"`
+	TotalIncome int `json:"totalIncome"`
+	TotalExpense int `json:"totalExpense"`
+}
+
 //NewIncome is a function that use to create new account to store money.
 func (m *moneySaver)NewIncome(accountName string, amount int, name string, changeType string) error{
 
@@ -226,7 +236,7 @@ func (m *moneySaver)addExpenseType(expenseType string) error{
 }
 
 //GetRecordMonthly is a function that use to get all record in input time.
-func (m *moneySaver)GetRecordMonthly(month int, year int) ([]Record, error){
+func (m *moneySaver)getRecordMonthly(month int, year int) ([]Record, error){
 
 	var r Record
 
@@ -257,13 +267,13 @@ func (m *moneySaver)GetRecordMonthly(month int, year int) ([]Record, error){
 }
 
 //GetRecordYearly is a function that use to get all record in input time.
-func (m *moneySaver)GetRecordYearly(month int, year int) ([]Record, error){
+func (m *moneySaver)getRecordYearly(year int) ([]Record, error){
 
 	var r Record
 
 	var records []Record
 
-	iter := m.client.Collection("record").Where("month", "==", month).Where("year", "==", year).Documents(ctx)
+	iter := m.client.Collection("record").Where("year", "==", year).Documents(ctx)
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
@@ -285,4 +295,126 @@ func (m *moneySaver)GetRecordYearly(month int, year int) ([]Record, error){
 	}
 	
 	return records, nil
+}
+
+//MonthlySummarize is a function that use to get summarize of money that get and earn use in that month.
+func (m *moneySaver)MonthlySummarize(month int, year int) (Summarize, error){
+
+	var s Summarize
+	incomeSummarize := make(map[string]int)
+	expenseSummarize := make(map[string]int)
+	var incomeType []string
+	var expenseType []string
+	var totalIncome int
+	var totalExpense int
+
+	records, err := m.getRecordMonthly(month,year)
+	if err != nil{
+		return s, err
+	}
+
+	for _, r := range records{
+		if r.RecordType == "Income"{
+			check := true
+			for _, i := range incomeType {
+				if r.ChangeType == i{
+					check = false
+				}
+			}
+			if check{
+				incomeType = append(incomeType, r.ChangeType)
+				incomeSummarize[r.ChangeType] = r.Amount
+			}else{
+				incomeSummarize[r.ChangeType] += r.Amount
+			}
+			totalIncome += r.Amount
+		}else{
+			check := true
+			for _, i := range expenseType {
+				if r.ChangeType == i{
+					check = false
+				}
+			}
+			if check{
+				expenseType = append(expenseType, r.ChangeType)
+				expenseSummarize[r.ChangeType] = r.Amount
+			}else{
+				expenseSummarize[r.ChangeType] += r.Amount
+			}
+			totalExpense += r.Amount
+		}
+	}
+
+	s = Summarize{
+		Records: records,
+		IncomeSummarize: incomeSummarize,
+		IncomeType: incomeType,
+		ExpenseSummarize: expenseSummarize,
+		ExpenseType: expenseType,
+		TotalIncome: totalIncome,
+		TotalExpense: totalExpense,
+	}
+	
+	return s, nil
+}
+
+//YearlySummarize is a function that use to get summarize of money that get and earn use in that month.
+func (m *moneySaver)YearlySummarize(year int) (Summarize, error){
+
+	var s Summarize
+	incomeSummarize := make(map[string]int)
+	expenseSummarize := make(map[string]int)
+	var incomeType []string
+	var expenseType []string
+	var totalIncome int
+	var totalExpense int
+
+	records, err := m.getRecordYearly(year)
+	if err != nil{
+		return s, err
+	}
+
+	for _, r := range records{
+		if r.RecordType == "Income"{
+			check := true
+			for _, i := range incomeType {
+				if r.ChangeType == i{
+					check = false
+				}
+			}
+			if check{
+				incomeType = append(incomeType, r.ChangeType)
+				incomeSummarize[r.ChangeType] = r.Amount
+			}else{
+				incomeSummarize[r.ChangeType] += r.Amount
+			}
+			totalIncome += r.Amount
+		}else{
+			check := true
+			for _, i := range expenseType {
+				if r.ChangeType == i{
+					check = false
+				}
+			}
+			if check{
+				expenseType = append(expenseType, r.ChangeType)
+				expenseSummarize[r.ChangeType] = r.Amount
+			}else{
+				expenseSummarize[r.ChangeType] += r.Amount
+			}
+			totalExpense += r.Amount
+		}
+	}
+
+	s = Summarize{
+		Records: records,
+		IncomeSummarize: incomeSummarize,
+		IncomeType: incomeType,
+		ExpenseSummarize: expenseSummarize,
+		ExpenseType: expenseType,
+		TotalIncome: totalIncome,
+		TotalExpense: totalExpense,
+	}
+	
+	return s, nil
 }

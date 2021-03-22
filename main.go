@@ -44,7 +44,7 @@ func main() {
 		log.Fatalf("Failed to add new income: %v\n", err)
 	}*/
 
-	records ,err := m.GetRecordMonthly(3, 2021)
+	records ,err := m.YearlySummarize(2021)
 	if err != nil{
 		log.Fatalln(err)
 	}
