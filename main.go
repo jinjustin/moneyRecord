@@ -3,7 +3,8 @@ package main
 import (
 	//"github.com/gin-gonic/gin"
 	"github.com/jinjustin/moneyRecord/moneySaver"
-	"log"	
+	"log"
+	"fmt"	
 )
 
 var (
@@ -28,19 +29,24 @@ func main() {
 	}
 	defer m.Close()
 
-	err = m.NewExpense("Test Account",1000,"ค่าหอ","ค่าอยู่")
+	/*err = m.NewIncome("Test", 2000, "พ่อให้มา", "เงินพิเศษ")
 	if err != nil{
-		log.Fatalf("Failed to create new expense: %v\n", err)
+		log.Fatalf("Failed to add new income: %v\n", err)
 	}
 
-	err = m.NewExpense("Test Account",60,"ข้าวกะเพราะหมูสามชั้น","ค่ากิน")
+	err = m.NewIncome("Test", 3000, "ค่าจ้างเขียน BotLine", "เงินพิเศษ")
 	if err != nil{
-		log.Fatalf("Failed to create new expense: %v\n", err)
+		log.Fatalf("Failed to add new income: %v\n", err)
 	}
 
-	err = m.NewExpense("Test Account",20,"ข้าวเกรียบ","ค่ากิน")
+	err = m.NewExpense("Test", 600, "ค่าโรงแรม", "ค่าเที่ยว")
 	if err != nil{
-		log.Fatalf("Failed to create new expense: %v\n", err)
+		log.Fatalf("Failed to add new income: %v\n", err)
+	}*/
 
+	records ,err := m.GetRecordMonthly(3, 2021)
+	if err != nil{
+		log.Fatalln(err)
 	}
+	fmt.Println(records)
 }
