@@ -6,7 +6,7 @@ import (
 	"log"	
 )
 
-const (
+var (
 	projectID = "moneyrecord-7ef16"
 	credentialsFile = "./moneySaver/moneyrecord-7ef16-firebase-adminsdk-ymi9q-56a433392f.json"
 )
