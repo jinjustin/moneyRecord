@@ -6,7 +6,7 @@ import (
 	"log"	
 )
 
-const (
+var (
 	projectID = "moneyrecord-7ef16"
 	credentialsFile = "./moneySaver/moneyrecord-7ef16-firebase-adminsdk-ymi9q-56a433392f.json"
 )
@@ -41,5 +41,6 @@ func main() {
 	err = m.NewExpense("Test Account",20,"ข้าวเกรียบ","ค่ากิน")
 	if err != nil{
 		log.Fatalf("Failed to create new expense: %v\n", err)
+
 	}
 }
