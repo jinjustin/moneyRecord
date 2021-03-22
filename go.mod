@@ -9,4 +9,5 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518
 	google.golang.org/api v0.42.0
+	google.golang.org/grpc v1.36.0
 )
